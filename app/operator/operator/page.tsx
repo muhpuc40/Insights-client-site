@@ -36,7 +36,7 @@ const OperatorManagement: React.FC = () => {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('http://localhost:4000/api/operators')
+      const response = await fetch('https://insights-serverside-sigma.vercel.app/api/operators')
       const result = await response.json()
       
       if (result.status) {
@@ -63,7 +63,7 @@ const OperatorManagement: React.FC = () => {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('http://localhost:4000/api/operators', {
+      const response = await fetch('https://insights-serverside-sigma.vercel.app/api/operators', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
