@@ -135,6 +135,7 @@ const Sidebar = () => {
     const pathname = usePathname();
     const [currentMenu, setCurrentMenu] = useState<string>('');
     const [errorSubMenu, setErrorSubMenu] = useState(false);
+    const [userRole, setUserRole] = useState<string | null>(null);
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
     const toggleMenu = (value: string) => {
@@ -142,6 +143,20 @@ const Sidebar = () => {
             return oldValue === value ? '' : value;
         });
     };
+
+    // Check user role from localStorage
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                const parsedData = JSON.parse(userData);
+                setUserRole(parsedData.role || null);
+            }
+        } catch (error) {
+            console.error('Error parsing userData from localStorage:', error);
+            setUserRole(null);
+        }
+    }, []);
 
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
@@ -165,7 +180,7 @@ const Sidebar = () => {
         if (window.innerWidth < 1024 && themeConfig.sidebar) {
             dispatch(toggleSidebar());
         }
-    }, [pathname]);
+    }, [pathname, dispatch, themeConfig.sidebar]);
 
     const setActiveRoute = () => {
         let allLinks = document.querySelectorAll('.sidebar ul a.active');
@@ -274,7 +289,15 @@ const Sidebar = () => {
                                 </Link>
                             </li>
                             
-                            {sidebarMenuItems.map((menu) => (
+                            {sidebarMenuItems
+                                .filter((menu) => {
+                                    // Hide operator menu if user is not admin
+                                    if (menu.key === 'operator' && userRole !== 'admin') {
+                                        return false;
+                                    }
+                                    return true;
+                                })
+                                .map((menu) => (
                                 <li className="menu nav-item" key={menu.key}>
                                     <button
                                         type="button"

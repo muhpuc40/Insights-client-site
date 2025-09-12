@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface User {
   id: number
@@ -11,6 +12,8 @@ interface User {
 }
 
 const UserRegistration: React.FC = () => {
+  const router = useRouter()
+  
   // Demo data for user list (temporary until API is ready)
   const [users, setUsers] = useState<User[]>([
     { id: 1, name: "John Doe", email: "john@example.com", role: "admin" },
@@ -33,6 +36,27 @@ const UserRegistration: React.FC = () => {
     password: "",
     role: "operator",
   })
+
+  // Check if user is admin, redirect to home if not
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem('userData')
+      if (userData) {
+        const parsedData = JSON.parse(userData)
+        if (parsedData.role !== 'admin') {
+          router.replace('/')
+          return
+        }
+      } else {
+        // No user data found, redirect to home
+        router.replace('/')
+        return
+      }
+    } catch (error) {
+      console.error('Error parsing userData from localStorage:', error)
+      router.replace('/')
+    }
+  }, [router])
 
   // Register new user
   const registerUser = async () => {
