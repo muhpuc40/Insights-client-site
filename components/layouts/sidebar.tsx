@@ -40,24 +40,6 @@ const PerfectScrollbar = dynamic(() => import('react-perfect-scrollbar'), {
 
 const sidebarMenuItems = [
     {
-        name: 'Reports',
-        key: 'reports',
-        icon: IconMenuCharts,
-        subItems: [
-            { name: 'Down Time', href: '/reports/down-time' },
-        ],
-    },
-    {
-        name: 'Locations',
-        key: 'locations',
-        icon: IconMenuContacts,
-        subItems: [
-            { name: 'Locations Operator', href: '/locations/operator' },
-            { name: 'Location List', href: '/locations/list' },
-            { name: 'Add Or Edit', href: '/locations/add-or-edit' },
-        ],
-    },
-    {
         name: 'Operator',
         key: 'operator',
         icon: IconMenuUsers,
@@ -68,16 +50,6 @@ const sidebarMenuItems = [
         ],
     },
     {
-        name: 'Machine',
-        key: 'machine',
-        icon: IconMenuElements,
-        subItems: [
-            { name: 'Machine Operator', href: '/machine/operator' },
-            { name: 'Machine List', href: '/machine/list' },
-            { name: 'Add Or Edit', href: '/machine/add-or-edit' },
-        ],
-    },
-    {
         name: 'IotDevice',
         key: 'iotdevice',
         icon: IconMenuFontIcons,
@@ -85,6 +57,34 @@ const sidebarMenuItems = [
             { name: 'Device Operator', href: '/iotdevice/operator' },
             // { name: 'Device List', href: '/iotdevice/list' },
             // { name: 'Add Or Edit', href: '/iotdevice/add-or-edit' },
+        ],
+    },
+    {
+        name: 'Reports',
+        key: 'reports',
+        icon: IconMenuCharts,
+        subItems: [
+            { name: 'Down Time', href: '/reports/down-time' },
+        ],
+    },
+    // {
+    //     name: 'Locations',
+    //     key: 'locations',
+    //     icon: IconMenuContacts,
+    //     subItems: [
+    //         { name: 'Locations Operator', href: '/locations/operator' },
+    //         { name: 'Location List', href: '/locations/list' },
+    //         { name: 'Add Or Edit', href: '/locations/add-or-edit' },
+    //     ],
+    // },
+    {
+        name: 'Machine',
+        key: 'machine',
+        icon: IconMenuElements,
+        subItems: [
+            { name: 'Machine Operator', href: '/machine/operator' },
+            { name: 'Machine List', href: '/machine/list' },
+            { name: 'Add Or Edit', href: '/machine/add-or-edit' },
         ],
     },
     {

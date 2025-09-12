@@ -1,18 +1,23 @@
+"use client";
 import ComponentsAuthRegisterForm from '@/components/auth/components-auth-register-form';
 import IconFacebookCircle from '@/components/icon/icon-facebook-circle';
 import IconGoogle from '@/components/icon/icon-google';
 import IconInstagram from '@/components/icon/icon-instagram';
 import IconTwitter from '@/components/icon/icon-twitter';
 import LanguageDropdown from '@/components/language-dropdown';
-import { Metadata } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
-export const metadata: Metadata = {
-    title: 'Register Cover',
-};
+// export const metadata: Metadata = {
+//     title: 'Register Cover',
+// };
 
 const CoverRegister = () => {
+    const router = useRouter();
+    useEffect(() => {
+        router.replace('/auth/login');
+    }, [router]);
     return (
         <div>
             <div className="absolute inset-0">
