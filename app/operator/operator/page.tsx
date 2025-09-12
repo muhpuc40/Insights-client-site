@@ -150,7 +150,7 @@ const UserRegistration: React.FC = () => {
       )}
 
       <section className="mb-6">
-        <h1 className="text-2xl font-bold mb-6 text-center">User Registration</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">ADD Operator or Admin</h1>
         <div className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
