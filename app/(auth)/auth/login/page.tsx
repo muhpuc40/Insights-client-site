@@ -93,12 +93,6 @@ const CoverLogin = () => {
                                     </li>
                                 </ul>
                             </div>
-                            <div className="text-center dark:text-white">
-                                Don&apos;t have an account ?&nbsp;
-                                <Link href="/auth/register" className="uppercase text-primary underline transition hover:text-black dark:hover:text-white">
-                                    SIGN UP
-                                </Link>
-                            </div>
                         </div>
                         <p className="absolute bottom-6 w-full text-center dark:text-white">© {new Date().getFullYear()}.Insights Automata All rights reserved.</p>
                     </div>

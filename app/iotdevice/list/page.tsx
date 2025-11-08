@@ -1,96 +1,221 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+
+interface Parameter {
+  name: string
+  value: string
+}
 
 interface Device {
-  id: string
-  machineId: string
-  locationId: string
-  status: "active" | "inactive" | "Not functional"
+  id: number
+  name: string
+  status: "active" | "inactive" | "not-functional"
+  api_key: string
+  parameters: Parameter[]
+  created_at: string
 }
 
 export default function IotDeviceList() {
-  const [devices, setDevices] = useState<Device[]>([
-    { id: "1", machineId: "swe1", locationId: "1", status: "active" },
-    { id: "2", machineId: "fns2", locationId: "12", status: "Not functional" },
-    { id: "3", machineId: "1", locationId: "1", status: "active" },
-    { id: "4", machineId: "sdf", locationId: "12", status: "inactive" },
-    { id: "5", machineId: "swe2", locationId: "14", status: "active" },
-    { id: "6", machineId: "swe3", locationId: "15", status: "active" },
-  ])
+  const [devices, setDevices] = useState<Device[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
 
-  const handleEdit = (id: string) => {
-    console.log("Edit device:", id)
-  }
+  useEffect(() => {
+    fetchDevices()
+  }, [])
 
-  const handleDelete = (id: string) => {
-    setDevices(devices.filter((device) => device.id !== id))
+  const fetchDevices = async () => {
+    try {
+      const token = localStorage.getItem('authToken')
+      const response = await fetch('http://192.168.0.106:8000/api/devices', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+        },
+      })
+
+      const data = await response.json()
+
+      if (data.status) {
+        setDevices(data.data)
+      } else {
+        setError(data.message || 'Failed to fetch devices')
+      }
+    } catch (error) {
+      console.error('Error fetching devices:', error)
+      setError('Network error. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "text-green-600 dark:text-green-400"
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
       case "inactive":
-        return "text-red-600 dark:text-red-400"
-      case "Not functional":
-        return "text-yellow-600 dark:text-yellow-400"
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+      case "not-functional":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
       default:
-        return "text-gray-600 dark:text-gray-400"
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
     }
+  }
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "active":
+        return "🟢"
+      case "inactive":
+        return "🔴"
+      case "not-functional":
+        return "🟡"
+      default:
+        return "⚪"
+    }
+  }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+    alert('Copied to clipboard!')
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-lg text-gray-600 dark:text-gray-400">Loading devices...</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-red-600 dark:text-red-400">{error}</div>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
       <div className="w-full mx-auto space-y-6">
-        {/* Device List Section */}
-        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm">
-          <div className="p-6 border-b border-gray-200 dark:border-slate-700">
-            <h2 className="text-gray-900 dark:text-white text-lg font-semibold">Device List</h2>
-          </div>
-          <div className="p-6">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200 dark:border-slate-700">
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Machine Id</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Location Id</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Status</th>
-                    <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-300 font-semibold">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {devices.map((device) => (
-                    <tr
-                      key={device.id}
-                      className="border-b border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors duration-150"
-                    >
-                      <td className="py-3 px-4 text-gray-900 dark:text-white">{device.machineId}</td>
-                      <td className="py-3 px-4 text-gray-900 dark:text-white">{device.locationId}</td>
-                      <td className={`py-3 px-4 ${getStatusColor(device.status)}`}>{device.status}</td>
-                      <td className="py-3 px-4">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleEdit(device.id)}
-                            className="px-3 py-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs rounded font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(device.id)}
-                            className="px-3 py-1 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 text-white text-xs rounded font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Devices</h1>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            {devices.length} device{devices.length !== 1 ? 's' : ''}
           </div>
         </div>
+
+        {/* Device Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {devices.map((device) => (
+            <div
+              key={device.id}
+              className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+            >
+              {/* Combined Header Section */}
+              <div className="p-4 border-b border-gray-200 dark:border-slate-700">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                      {device.name}
+                    </h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      ID: {device.id} • Created: {new Date(device.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(device.status)} flex-shrink-0 ml-2`}>
+                    {getStatusIcon(device.status)} {device.status.charAt(0).toUpperCase() + device.status.slice(1)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Combined API and Parameters Section */}
+              <div className="p-4 space-y-4">
+                {/* API URL */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    API Endpoint
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="flex flex-col gap-2">
+                      <code className="bg-gray-100 dark:bg-slate-700 px-3 py-2 rounded text-sm font-mono text-gray-800 dark:text-gray-200 break-words leading-relaxed">
+                      http://192.168.0.106:8000/api/devices/{device.api_key}
+                      </code>
+                      <button
+                        onClick={() => copyToClipboard(`http://192.168.0.106:8000/api/devices/${device.api_key}`)}
+                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors duration-200 w-full"
+                      >
+                        Copy URL
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Parameters */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    Parameters
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {device.parameters.map((param, index) => (
+                      <div key={index} className="flex flex-col p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
+                          {param.name}
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          {param.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="p-4 border-t border-gray-200 dark:border-slate-700">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {device.parameters.length} Parameter{device.parameters.length !== 1 ? 's' : ''}
+                  </span>
+                  <div className="flex gap-2">
+                    <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded font-medium transition-colors duration-200">
+                      Edit
+                    </button>
+                    <button className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded font-medium transition-colors duration-200">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {devices.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">📱</div>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              No devices found
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Get started by creating your first IoT device.
+            </p>
+            <button
+              onClick={() => window.location.href = '/add-device'}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200"
+            >
+              Add Your First Device
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

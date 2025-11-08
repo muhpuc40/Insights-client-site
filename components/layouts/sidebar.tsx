@@ -40,8 +40,27 @@ const PerfectScrollbar = dynamic(() => import('react-perfect-scrollbar'), {
 
 const sidebarMenuItems = [
 
-
     {
+        name: 'IoT Device',
+        key: 'iotdevice',
+        icon: IconMenuFontIcons,
+        subItems: [
+            { name: 'Add New Device', href: '/iotdevice/add-or-edit' },
+         //   { name: 'Device Operator', href: '/iotdevice/operator' },
+            { name: 'Device List', href: '/iotdevice/list' },
+
+        ],
+    },
+
+/*   {
+        name: 'Reports',
+        key: 'reports',
+        icon: IconMenuCharts,
+        subItems: [
+            { name: 'Down Time', href: '/reports/down-time' },
+        ],
+    },
+        {
         name: 'Operator',
         key: 'operator',
         icon: IconMenuUsers,
@@ -51,25 +70,6 @@ const sidebarMenuItems = [
             // { name: 'Add Or Edit', href: '/operator/add-or-edit' },
         ],
     },
-    {
-        name: 'IoT Device',
-        key: 'iotdevice',
-        icon: IconMenuFontIcons,
-        subItems: [
-            { name: 'Device Operator', href: '/iotdevice/operator' },
-            // { name: 'Device List', href: '/iotdevice/list' },
-            // { name: 'Add Or Edit', href: '/iotdevice/add-or-edit' },
-        ],
-    },
-    {
-        name: 'Reports',
-        key: 'reports',
-        icon: IconMenuCharts,
-        subItems: [
-            { name: 'Down Time', href: '/reports/down-time' },
-        ],
-    },
-/*
     {
         name: 'Locations',
         key: 'locations',
