@@ -65,7 +65,7 @@ const ComponentsAuthRegisterForm = () => {
                 password: formData.password
             };
             // Make API call
-            const response = await fetch('http://192.168.0.106:8000/api/auth/register', {
+            const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

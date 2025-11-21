@@ -54,7 +54,7 @@ const Dashboard = () => {
   const fetchDevices = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('http://192.168.0.106:8000/api/devices', {
+      const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -74,7 +74,7 @@ const Dashboard = () => {
   const fetchLatestDeviceData = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('http://192.168.0.106:8000/api/devices/data/latest', {
+      const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/data/latest', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -97,10 +97,10 @@ const Dashboard = () => {
     try {
       setDataLoading(true);
       const token = localStorage.getItem('authToken');
-      
-      const url = selectedDevice === "all" 
-        ? `http://192.168.0.106:8000/api/devices/data/all?time_range=${timeRange}`
-        : `http://192.168.0.106:8000/api/devices/${selectedDevice}/data?time_range=${timeRange}`;
+
+      const url = selectedDevice === "all"
+        ? `http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/data/all?time_range=${timeRange}`
+        : `http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/${selectedDevice}/data?time_range=${timeRange}`;
 
       const response = await fetch(url, {
         headers: {
@@ -238,7 +238,7 @@ const Dashboard = () => {
             <button
               onClick={() => {
                 fetchDeviceData();
-                fetchLatestDeviceData(); // Refresh latest data too
+                fetchLatestDeviceData(); // Refresh latest data
               }}
               disabled={dataLoading}
               className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-md font-medium transition-colors duration-200 flex items-center justify-center gap-2"
@@ -271,8 +271,8 @@ const Dashboard = () => {
                 No Data Available
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                {selectedDevice === "all" 
-                  ? "No device data found for the selected time period." 
+                {selectedDevice === "all"
+                  ? "No device data found for the selected time period."
                   : "No data found for this device."}
               </p>
             </div>
@@ -281,9 +281,6 @@ const Dashboard = () => {
               <table className="w-full min-w-full">
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-slate-700">
-                    <th className="text-left py-3 px-2 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                      Device
-                    </th>
                     <th className="text-left py-3 px-2 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                       Data
                     </th>
@@ -298,9 +295,6 @@ const Dashboard = () => {
                       key={data.id}
                       className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors duration-150"
                     >
-                      <td className="py-3 px-2 text-xs sm:text-sm text-gray-900 dark:text-white">
-                        <div className="font-medium">{data.device?.name || `Device ${data.device_id}`}</div>
-                      </td>
                       <td className="py-3 px-2">
                         <div className="flex flex-wrap items-center gap-x-2 max-w-xs">
                           {Object.entries(data.data).map(([key, value]) => (

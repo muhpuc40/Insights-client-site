@@ -67,7 +67,7 @@ export default function AddDeviceForm() {
     try {
       const token = localStorage.getItem('authToken')
       
-      const response = await fetch('http://192.168.0.106:8000/api/devices', {
+      const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function AddDeviceForm() {
           {apiInfo && (
             <div className="mb-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
               <div className="flex items-start justify-between mb-3">
-                <h3 className="text-green-800 dark:text-green-200 font-semibold text-base">Device Created Successfully!</h3>
+                <h3 className="text-green-800 dark:text-green-200 font-semibold text-base">New Device Created Successfully!</h3>
                 <button
                   onClick={() => setApiInfo(null)}
                   className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200 text-lg"
@@ -155,7 +155,7 @@ export default function AddDeviceForm() {
                 </div>
 
                 <p className="text-green-700 dark:text-green-300 text-xs">
-                  Use this API endpoint to send data from your device. The data format should match your parameters.
+                  Use this API endpoint to send data from your IoT device. The data format should match your parameters.
                 </p>
               </div>
             </div>

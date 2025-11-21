@@ -20,6 +20,7 @@ export default function IotDeviceList() {
   const [devices, setDevices] = useState<Device[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [copiedField, setCopiedField] = useState<string | null>(null) // Add this line
 
   useEffect(() => {
     fetchDevices()
@@ -28,7 +29,7 @@ export default function IotDeviceList() {
   const fetchDevices = async () => {
     try {
       const token = localStorage.getItem('authToken')
-      const response = await fetch('http://192.168.0.106:8000/api/devices', {
+      const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -76,9 +77,15 @@ export default function IotDeviceList() {
     }
   }
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
-    alert('Copied to clipboard!')
+  const copyToClipboard = async (text: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedField(field)
+      setTimeout(() => setCopiedField(null), 2000)
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+      alert('Failed to copy to clipboard')
+    }
   }
 
   if (loading) {
@@ -146,13 +153,20 @@ export default function IotDeviceList() {
                   <div className="space-y-2">
                     <div className="flex flex-col gap-2">
                       <code className="bg-gray-100 dark:bg-slate-700 px-3 py-2 rounded text-sm font-mono text-gray-800 dark:text-gray-200 break-words leading-relaxed">
-                      http://192.168.0.106:8000/api/devices/{device.api_key}
+                        http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/{device.api_key}
                       </code>
                       <button
-                        onClick={() => copyToClipboard(`http://192.168.0.106:8000/api/devices/${device.api_key}`)}
-                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors duration-200 w-full"
+                        onClick={() => copyToClipboard(`http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/${device.api_key}`, `url-${device.id}`)}
+                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors duration-200 w-full flex items-center justify-center gap-1"
                       >
-                        Copy URL
+                        {copiedField === `url-${device.id}` ? (
+                          <>
+                            <span>✓</span>
+                            <span>Copied</span>
+                          </>
+                        ) : (
+                          'Copy URL'
+                        )}
                       </button>
                     </div>
                   </div>
