@@ -67,7 +67,7 @@ export default function AddDeviceForm() {
     try {
       const token = localStorage.getItem('authToken')
       
-      const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
+      const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -31,7 +31,7 @@ const ComponentsAuthLoginForm = () => {
         setIsLoading(true);
         setError('');
         try {
-            const response = await fetch('http://https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/auth/login', {
+            const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
