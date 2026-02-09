@@ -65,7 +65,7 @@ const ComponentsAuthRegisterForm = () => {
                 password: formData.password
             };
             // Make API call
-            const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/auth/register', {
+            const response = await fetch('https://iot.ieeepusb.org/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

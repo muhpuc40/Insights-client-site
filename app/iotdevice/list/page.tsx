@@ -29,10 +29,12 @@ export default function IotDeviceList() {
   const fetchDevices = async () => {
     try {
       const token = localStorage.getItem('authToken')
-      const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
+      const response = await fetch('https://iot.ieeepusb.org/api/devices', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
+          
+          
         },
       })
 
@@ -153,10 +155,10 @@ export default function IotDeviceList() {
                   <div className="space-y-2">
                     <div className="flex flex-col gap-2">
                       <code className="bg-gray-100 dark:bg-slate-700 px-3 py-2 rounded text-sm font-mono text-gray-800 dark:text-gray-200 break-words leading-relaxed">
-                        https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/{device.api_key}
+                        https://iot.ieeepusb.org/api/devices/{device.api_key}
                       </code>
                       <button
-                        onClick={() => copyToClipboard(`https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/${device.api_key}`, `url-${device.id}`)}
+                        onClick={() => copyToClipboard(`https://iot.ieeepusb.org/api/devices/${device.api_key}`, `url-${device.id}`)}
                         className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors duration-200 w-full flex items-center justify-center gap-1"
                       >
                         {copiedField === `url-${device.id}` ? (
