@@ -40,7 +40,7 @@ export default function IotDeviceOperator() {
     setLoading(true)
     setError(null)
     try {
-      const response = await fetch('https://insights-serverside-sigma.vercel.app/api/devices', {
+      const response = await fetch('https://iot.ieeepusb.org/api/devices', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function IotDeviceOperator() {
     setError(null)
     
     try {
-      const response = await fetch('https://insights-serverside-sigma.vercel.app/api/devices', {
+      const response = await fetch('https://iot.ieeepusb.org/api/devices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

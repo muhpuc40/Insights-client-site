@@ -54,7 +54,7 @@ const Dashboard = () => {
   const fetchDevices = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices', {
+      const response = await fetch('https://iot.ieeepusb.org/api/devices', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -74,7 +74,7 @@ const Dashboard = () => {
   const fetchLatestDeviceData = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch('https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/data/latest', {
+      const response = await fetch('https://iot.ieeepusb.org/api/devices/data/latest', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
@@ -99,8 +99,8 @@ const Dashboard = () => {
       const token = localStorage.getItem('authToken');
 
       const url = selectedDevice === "all"
-        ? `https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/data/all?time_range=${timeRange}`
-        : `https://ingeborg-phytotoxic-clotilde.ngrok-free.dev/api/devices/${selectedDevice}/data?time_range=${timeRange}`;
+        ? `https://iot.ieeepusb.org/api/devices/data/all?time_range=${timeRange}`
+        : `https://iot.ieeepusb.org/api/devices/${selectedDevice}/data?time_range=${timeRange}`;
 
       const response = await fetch(url, {
         headers: {
